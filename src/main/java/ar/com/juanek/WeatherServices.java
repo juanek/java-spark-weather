@@ -22,7 +22,7 @@ public class WeatherServices {
 
         String entity = client.target("https://api.openweathermap.org/data/2.5")
                 .path("weather")
-                .queryParam("q", "London")
+                .queryParam("q", city)
                 .queryParam("units", "metric")
                 .queryParam("APPID", "dbd3b02d8958d62185d02e944cd5f522")
                 .request(MediaType.APPLICATION_JSON)

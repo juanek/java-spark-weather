@@ -10,19 +10,18 @@ import org.slf4j.LoggerFactory;
 import static spark.Spark.get;
 
 /**
- * Hello world!
+ * http://localhost:4567/weather/Santa Fe,AR
  */
 public class App {
     private static final Logger log = LoggerFactory.getLogger(App.class);
+       public static void main(String[] args) {
 
-    public static void main(String[] args) {
+        Injector injector = Guice.createInjector(new ServicesModule());
+        WeatherServices weatherServices = injector.getInstance(WeatherServices.class);
 
-        Injector injector = Guice.createInjector();
-        WeatherServices someClass = injector.getInstance(WeatherServices.class);
-
-        get("/hello", (req, res) -> {
+        get("/weather/:city", (req, res) -> {
             res.type("application/json");
-            return someClass.getWeather("London");
+            return weatherServices.getWeather(req.params(":city"));
         });
 
         get("/json/:name", (req, res) -> {
@@ -30,6 +29,5 @@ public class App {
                     return ImmutableMap.of("name", req.params(":name"));
                 },
                 new Gson()::toJson);
-
     }
 }
